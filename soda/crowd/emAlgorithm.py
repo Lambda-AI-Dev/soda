@@ -101,11 +101,14 @@ class EMClassifier(CrowdClassifier):
     def _value_tuple_to_graph(I, J, V, n_workers, n_examples):
         """
         Convert a tuple of sparse labeling information into a graph
-        Args:
-            I: worker indices (will be converted to nonnegative, starting from 0 to n_workers-1, inclusive)
-            J: example indices (will be converted to negative, starting from -1 to -n_examples, inclusive)
-            V: value or probability vector given worker index (i) and example index
-        Returns:
+        Parameters
+        ----------
+        I : worker indices (will be converted to nonnegative, starting from 0 to n_workers-1, inclusive)
+        J : example indices (will be converted to negative, starting from -1 to -n_examples, inclusive)
+        V : value or probability vector given worker index (i) and example index
+
+        Returns
+        -------
 
         """
         G = BipartiteGraph()

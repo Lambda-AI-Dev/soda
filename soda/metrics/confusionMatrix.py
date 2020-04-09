@@ -78,27 +78,28 @@ def confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, n_classes: int, sam
         None: Useful for joint probability of true_class = i and predicted_class = j.
         None will be used when the normalization axis is invalid.
 
-    Args:
-    y_true: (n_examples, ) array of true class labels
+    Parameters
+    ----------
+    y_true : (n_examples, ) array of true class labels
         or (n_examples, n_classes) array of soft labels (class probabilities)
 
-    y_pred: (n_examples, ) array of predicted class labels
+    y_pred : (n_examples, ) array of predicted class labels
         or (n_examples, n_classes) array of predicted class probabilities
         The class probabilities must be normalized
 
-    n_classes: number of unique class labels (from 0 to n_classes-1, inclusive)
+    n_classes : number of unique class labels (from 0 to n_classes-1, inclusive)
 
-    sample_weight: (n_examples, ) array of sample weight for each example
+    sample_weight : (n_examples, ) array of sample weight for each example
 
-    normalize (str): {'true', 'pred', 'all', None} how to normalize the confusion matrix
+    normalize : str in {'true', 'pred', 'all', None} how to normalize the confusion matrix
         if None, then the count is returned
 
-    Returns:
-    cm: (n_classes, n_classes) confusion matrix of counts/frequency. (truth * predicted)
+    Returns
+    -------
+    cm : (n_classes, n_classes) confusion matrix of counts/frequency. (truth * predicted)
         The vertical axis (axis 0) is truth and the horizontal axis (axis 1) is predicted.
         cm[i, j] counts the number of instances whose actual class is i and predicted class j.
 
-    This code should be production-ready.
     """
 
     cm = None
