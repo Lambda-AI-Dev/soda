@@ -1,9 +1,9 @@
 import numpy as np
 import numba
 
-from sklearn.metrics import accuracy_score
-
 from soda.utils.array import array_normalize
+from soda.utils.graph import BipartiteGraph
+from soda.metrics.accuracyScore import accuracy_score
 from soda.crowd.crowdClassifier import CrowdClassifier
 
 
@@ -90,10 +90,17 @@ def _class_count_sparse_2(U, V, E, n_examples, n_classes, worker_weight=None):
 class SimpleMajorityClassifier(CrowdClassifier):
     """
     tie-breaking behavior may be undefined
+
+    weight_func determines the algorithm's behavior on how to convert an individual accuracy to worker weights
     """
-    def __init__(self, n_classes):
+    def __init__(self, n_classes, weight_func=None):
         self.n_classes = n_classes
         self.worker_weight = None
+        self.weight_func = weight_func
+        if weight_func is None or weight_func == "accuracy":
+            self.weight_func = lambda d: d  # using accuracy as
+        # other examples of weight func:
+        # lambda d: d > 0.5  # only admits workers who do better than 0.5; full trust once admitted
 
     def predict_proba_dense(self, X: np.ndarray, **kwargs):
         """
@@ -133,3 +140,37 @@ class SimpleMajorityClassifier(CrowdClassifier):
 
     def fit_dense(self, X, y, sample_weight=None):
         self.worker_weight = np.array([accuracy_score(y_pred=x, y_true=y, sample_weight=sample_weight) for x in X])
+
+    def fit_sparse(self, U, V, E, y_gold, sample_weight=None):
+        """
+        y_gold[v] maps from task/item index to its true label
+        sample_weight[v] maps from task/item index to its weight
+        """
+        bg = BipartiteGraph()
+        worker_accuracy = None
+        if sample_weight is None:
+            bg.add_edges_t(U, V, E)
+
+            def agg_func(lst):
+                true_list, pred_list = [], []
+                for _, v, e in lst:
+                    true_list.append(y_gold[v])
+                    pred_list.append(e)
+                return accuracy_score(y_true=np.array(true_list), y_pred=np.array(pred_list), normalize=True)
+
+            worker_accuracy = bg.agg_u(agg_func)
+        else:
+            bg.add_edges_t(U, V, E)
+
+            def agg_func(lst):
+                weight_list, true_list, pred_list = [], [], []
+                for _, v, e in lst:
+                    weight_list.append(sample_weight[v])
+                    true_list.append(y_gold[v])
+                    pred_list.append(e)
+                return accuracy_score(
+                    y_true=np.array(true_list), y_pred=np.array(pred_list),
+                    sample_weight=np.array(weight_list), normalize=True
+                )
+            worker_accuracy = bg.agg_u(agg_func)
+        self.worker_weight = {u: self.weight_func(worker_accuracy[u]) for u in worker_accuracy}

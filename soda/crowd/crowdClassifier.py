@@ -31,6 +31,7 @@ class CrowdClassifier:
     X: (n_workers, n_examples) -> worker i classifies object j as class X[i, j]
     X: (n_workers, n_examples, n_classes) -> worker i believes the probability that object j belongs
         to class k is X[i, j, k]
+    U, V, E: triplets of (worker, example, prediction). A prediction can be either
     """
     def predict(self, X, **kwargs):
         try:

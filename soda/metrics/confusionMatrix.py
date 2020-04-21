@@ -80,7 +80,8 @@ def confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, n_classes: int, sam
 
     Parameters
     ----------
-    y_true : (n_examples, ) array of true class labels
+    y_true : array-like of shape (n_examples,) or (n_examples, n_classes)
+    (n_examples, ) array of true class labels
         or (n_examples, n_classes) array of soft labels (class probabilities)
 
     y_pred : (n_examples, ) array of predicted class labels
@@ -91,7 +92,7 @@ def confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, n_classes: int, sam
 
     sample_weight : (n_examples, ) array of sample weight for each example
 
-    normalize : str in {'true', 'pred', 'all', None} how to normalize the confusion matrix
+    normalize : one of {'true', 'pred', 'all', None} how to normalize the confusion matrix
         if None, then the count is returned
 
     Returns
@@ -99,15 +100,15 @@ def confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, n_classes: int, sam
     cm : (n_classes, n_classes) confusion matrix of counts/frequency. (truth * predicted)
         The vertical axis (axis 0) is truth and the horizontal axis (axis 1) is predicted.
         cm[i, j] counts the number of instances whose actual class is i and predicted class j.
-
     """
+    assert isinstance(y_true, np.ndarray)
 
     cm = None
     n_examples = y_true.shape[0]
 
     if sample_weight is not None and sample_weight.shape != (n_examples,):
-        ValueError(f"invalid shapes: y_true.shape = {y_true.shape}, y_pred.shape = {y_pred.shape},"
-                   f"sample_weight.shape = {sample_weight.shape}")
+        raise ValueError(f"invalid shapes: y_true.shape = {y_true.shape}, y_pred.shape = {y_pred.shape},"
+                         f"sample_weight.shape = {sample_weight.shape}")
 
     if y_true.shape == (n_examples,):
         if y_pred.shape == (n_examples, ):

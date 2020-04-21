@@ -17,10 +17,27 @@ class BipartiteGraph:
         for u, v, e in iterable:
             self.add_edge(u, v, e)
 
+    def add_edges_t(self, U, V, E):
+        self.add_edges(zip(U, V, E))
+
     def get_u_neighbors(self, u):
         return self.U_neighbors[u]
 
     def get_v_neighbors(self, v):
         return self.V_neighbors[v]
 
+    def agg_u(self, func):
+        """
+        func takes in an iterable of (u, v, e) pairs
+        the aggregate output is of the form u -> result
+        """
+        ret = {}
+        for u in self.U_neighbors:
+            ret[u] = func((u, v, self.edges[(u, v)]) for v in self.U_neighbors[u])
+        return ret
 
+    def agg_v(self, func):
+        ret = {}
+        for v in self.V_neighbors:
+            ret[v] = func((u, v, self.edges[(u, v)]) for u in self.V_neighbors[v])
+        return ret
