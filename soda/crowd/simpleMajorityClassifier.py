@@ -102,7 +102,7 @@ class SimpleMajorityClassifier(CrowdClassifier):
         # other examples of weight func:
         # lambda d: d > 0.5  # only admits workers who do better than 0.5; full trust once admitted
 
-    def predict_proba_dense(self, X: np.ndarray, **kwargs):
+    def predict_proba_dense(self, X: np.ndarray, **_):
         """
         Args:
         X: (n_workers, n_examples) array.
@@ -128,14 +128,14 @@ class SimpleMajorityClassifier(CrowdClassifier):
         else:
             raise ValueError(f"Cannot handle input X of shape {X.shape}")
 
-    def predict_proba_nan(self, X: np.ndarray, mask: np.ndarray, worker_weight=None, **kwargs):
+    def predict_proba_nan(self, X: np.ndarray, mask: np.ndarray, **_):
         count_func = _class_count_nan_2 if X.ndim == 2 else _class_count_nan_3
-        prob = count_func(X, mask, n_classes=self.n_classes, worker_weight=worker_weight)
+        prob = count_func(X, mask, n_classes=self.n_classes, worker_weight=self.worker_weight)
         return array_normalize(prob, axis=1)
 
-    def predict_proba_sparse(self, U, V, E, n_examples, worker_weight=None, **kwargs):
+    def predict_proba_sparse(self, U, V, E):
         count_func = _class_count_sparse_1 if E.ndim == 1 else _class_count_sparse_2
-        prob = count_func(U, V, E, n_classes=self.n_classes, worker_weight=worker_weight)
+        prob = count_func(U, V, E, n_classes=self.n_classes, worker_weight=self.worker_weight)
         return array_normalize(prob, axis=1)
 
     def fit_dense(self, X, y, sample_weight=None):

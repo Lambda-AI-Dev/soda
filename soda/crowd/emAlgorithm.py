@@ -113,7 +113,7 @@ class EMClassifier(CrowdClassifier):
         """
         G = BipartiteGraph()
         # use negative index for examples
-        G.add_edges_from(zip(I, J - n_examples, V))
+        G.add_edges(zip(I, J - n_examples, V))
         return G
 
     @staticmethod

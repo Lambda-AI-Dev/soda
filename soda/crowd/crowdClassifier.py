@@ -33,16 +33,17 @@ class CrowdClassifier:
         to class k is X[i, j, k]
     U, V, E: triplets of (worker, example, prediction). A prediction can be either
     """
-    def predict(self, X, **kwargs):
+    def predict(self, X):
         try:
             if isinstance(X, np.ndarray):
                 mask = np.isfinite(X)
                 if mask.all():
-                    return self.predict_dense(X, **kwargs)
+                    return self.predict_dense(X)
                 else:
-                    return self.predict_nan(X, mask, **kwargs)
+                    return self.predict_nan(X, mask)
             else:
-                return self.predict_sparse(X, **kwargs)
+                U, V, E = X
+                return self.predict_sparse(U, V, E)
         except NotImplementedError:
             return self.predict_proba(X).argmax(axis=1)
 
@@ -50,35 +51,35 @@ class CrowdClassifier:
         if isinstance(X, np.ndarray):
             mask = np.isfinite(X)
             if mask.all():
-                return self.predict_proba_dense(X, **kwargs)
+                return self.predict_proba_dense(X)
             else:
-                return self.predict_proba_nan(X, mask, **kwargs)
+                return self.predict_proba_nan(X, mask)
         else:
-            return self.predict_proba_sparse(X, **kwargs)
+            return self.predict_proba_sparse(X)
 
-    def predict_dense(self, X: np.ndarray, **kwargs):
-        return self.predict_proba_dense(X, **kwargs).argmax(axis=1)
+    def predict_dense(self, X: np.ndarray):
+        return self.predict_proba_dense(X).argmax(axis=1)
 
-    def predict_proba_dense(self, X: np.ndarray, **kwargs):
+    def predict_proba_dense(self, X: np.ndarray):
         raise NotImplementedError
 
-    def predict_nan(self, X: np.ndarray, mask: np.ndarray, **kwargs):
-        return self.predict_proba_nan(X, mask, **kwargs).argmax(axis=1)
+    def predict_nan(self, X: np.ndarray, mask: np.ndarray):
+        return self.predict_proba_nan(X, mask).argmax(axis=1)
 
-    def predict_proba_nan(self, X: np.ndarray, mask: np.ndarray, **kwargs):
+    def predict_proba_nan(self, X: np.ndarray, mask: np.ndarray):
         raise NotImplementedError
 
-    def predict_sparse(self, **kwargs):
-        return self.predict_proba_sparse(**kwargs).argmax(axis=1)
+    def predict_sparse(self, U, V, E):
+        return self.predict_proba_sparse(U, V, E).argmax(axis=1)
 
-    def predict_proba_sparse(self, **kwargs):
+    def predict_proba_sparse(self, U, V, E):
         raise NotImplementedError
 
-    def fit_dense(self, X, y, **kwargs):
+    def fit_dense(self, X, y, sample_weight):
         raise NotImplementedError
 
-    def fit_nan(self, X, y, **kwargs):
+    def fit_nan(self, X, y, sample_weight):
         raise NotImplementedError
 
-    def fit_sparse(self, **kwargs):
+    def fit_sparse(self, U, V, E, y, sample_weight):
         raise NotImplementedError
