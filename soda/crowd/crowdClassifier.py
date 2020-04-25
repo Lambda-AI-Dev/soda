@@ -69,10 +69,10 @@ class CrowdClassifier:
     def predict_proba_nan(self, X: np.ndarray, mask: np.ndarray):
         raise NotImplementedError
 
-    def predict_sparse(self, U, V, E):
-        return self.predict_proba_sparse(U, V, E).argmax(axis=1)
+    def predict_sparse(self, X):
+        return self.predict_proba_sparse(X).argmax(axis=1)
 
-    def predict_proba_sparse(self, U, V, E):
+    def predict_proba_sparse(self, X):
         raise NotImplementedError
 
     def fit_dense(self, X, y, sample_weight):
@@ -81,5 +81,5 @@ class CrowdClassifier:
     def fit_nan(self, X, y, sample_weight):
         raise NotImplementedError
 
-    def fit_sparse(self, U, V, E, y, sample_weight):
+    def fit_sparse(self, X, y, sample_weight):
         raise NotImplementedError
