@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="soda-pkg",
+    name="soda",
     version="0.0.1",
     author="Tianyi Miao",
     author_email="mtianyi@seas.upenn.edu",
