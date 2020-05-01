@@ -36,6 +36,7 @@ class BipartiteGraph:
 
     def add_edges_t(self, U, V, E, rename_u=None, rename_v=None):
         self.add_edges(zip(U, V, E), rename_u=rename_u, rename_v=rename_v)
+        return self
 
     def add_edges_sparse(self, sp_matrix, rename_u=None, rename_v=None):
         """
@@ -49,6 +50,7 @@ class BipartiteGraph:
         """
         U, V, E = sparse.find(sp_matrix)
         self.add_edges_t(U, V, E, rename_u=rename_u, rename_v=rename_v)
+        return self
 
     def get_u_neighbors(self, u):
         return self.U_neighbors[u]

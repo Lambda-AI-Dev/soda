@@ -193,7 +193,6 @@ class SimpleMajorityClassifier(CrowdClassifier):
         y_gold[v] maps from task/item index to its true label
         sample_weight[v] maps from task/item index to its weight
         """
-        worker_accuracy = None
         if sample_weight is None:
             def agg_func(lst):
                 true_list, pred_list = [], []
