@@ -140,8 +140,11 @@ class SimpleMajorityClassifier(CrowdClassifier):
         self.n_classes = n_classes
         self.worker_weight = None
         self.weight_func = weight_func
-        if weight_func is None or weight_func == "accuracy":
+
+        if weight_func == "accuracy":
             self.weight_func = lambda d: d[0] / d[1] if d[1] != 0 else 0.5  # using accuracy as weight
+        else:
+            self.weight_func = lambda _: 1  # universal equal weight
         # other examples of weight func:
         # d[0] is the number of correct predictions
         # d[1] is the number of total predictions
