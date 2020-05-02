@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def _prob_to_class(df):
-    if isinstance(df, np.array):
+    if isinstance(df, np.ndarray):
         return df.argmax(axis=1)
     elif isinstance(df, pd.DataFrame):
         return df.idxmax(axis=1)
