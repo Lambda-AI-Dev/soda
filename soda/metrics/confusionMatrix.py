@@ -1,7 +1,7 @@
 import numpy as np
 import numba
 
-from soda.utils.array import array_normalize
+from ..utils import array_normalize
 
 
 @numba.jit

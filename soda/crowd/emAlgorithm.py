@@ -24,12 +24,9 @@ from scipy import sparse
 
 # import sys
 # sys.path.append('.')  # solve relative import problem in Python
-
-from soda.utils.array import array_normalize
-from soda.utils.graph import BipartiteGraph
-from soda.metrics.confusionMatrix import confusion_matrix
-from soda.crowd.crowdClassifier import CrowdClassifier
-
+from ..utils import array_normalize, BipartiteGraph
+from ..metrics import confusion_matrix
+from . import CrowdClassifier
 
 
 # class NaiveEMClassifier(CrowdClassifier):

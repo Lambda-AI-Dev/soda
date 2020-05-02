@@ -2,10 +2,9 @@ import numpy as np
 import pandas as pd
 import numba
 
-from soda.utils.array import array_normalize
-from soda.utils.graph import BipartiteGraph
-from soda.metrics.accuracyScore import accuracy_score
-from soda.crowd.crowdClassifier import CrowdClassifier
+from ..utils import array_normalize, BipartiteGraph
+from ..metrics import accuracy_score
+from . import CrowdClassifier
 
 
 @numba.jit
