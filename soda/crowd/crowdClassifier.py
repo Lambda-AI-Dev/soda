@@ -1,4 +1,12 @@
 import numpy as np
+import pandas as pd
+
+
+def _prob_to_class(df):
+    if isinstance(df, np.array):
+        return df.argmax(axis=1)
+    elif isinstance(df, pd.DataFrame):
+        return df.idxmax(axis=1)
 
 
 class CrowdClassifier:
@@ -58,19 +66,19 @@ class CrowdClassifier:
             return self.predict_proba_sparse(X)
 
     def predict_dense(self, X: np.ndarray):
-        return self.predict_proba_dense(X).argmax(axis=1)
+        return _prob_to_class(self.predict_proba_dense(X))
 
     def predict_proba_dense(self, X: np.ndarray):
         raise NotImplementedError
 
     def predict_nan(self, X: np.ndarray, mask: np.ndarray):
-        return self.predict_proba_nan(X, mask).argmax(axis=1)
+        return _prob_to_class(self.predict_proba_nan(X, mask))
 
     def predict_proba_nan(self, X: np.ndarray, mask: np.ndarray):
         raise NotImplementedError
 
     def predict_sparse(self, X):
-        return self.predict_proba_sparse(X).argmax(axis=1)
+        return _prob_to_class(self.predict_proba_sparse(X))
 
     def predict_proba_sparse(self, X):
         raise NotImplementedError
