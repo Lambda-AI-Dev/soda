@@ -11,7 +11,7 @@ setuptools.setup(
     description="A collection of state-of-the-art machine learning algorithms",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/miaotianyi/soda",
+    url="https://github.com/Lambda-AI-Dev/soda",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
