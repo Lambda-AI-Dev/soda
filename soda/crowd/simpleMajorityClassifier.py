@@ -10,7 +10,7 @@ from . import CrowdClassifier
 @numba.jit
 def _class_count_2(X, n_classes, worker_weight=None):
     """
-    X is
+    X is worker * example array
     """
     prob = np.zeros((X.shape[1], n_classes))
     if worker_weight is None:

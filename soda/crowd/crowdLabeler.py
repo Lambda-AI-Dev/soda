@@ -11,7 +11,6 @@ class CrowdLabeler:
     4. l labels to choose from (one example can have multiple labels)
     5. X: (m, n, l) array of boolean labels (workers, examples, labels)
        X: (m, n, l) array of probabilities (individual, multilabel binary/one vs all)
-    6.
     """
 
     def predict(self, X):
@@ -64,7 +63,6 @@ class CrowdLabeler:
 
     def fit_sparse(self, X, y, sample_weight):
         raise NotImplementedError
-
 
 
 
